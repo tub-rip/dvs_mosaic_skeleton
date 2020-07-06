@@ -16,7 +16,7 @@ void Mosaic::publishMap()
   // Publish the current map state
   VLOG(1) << "publishMap()";
 
-  if (mosaic_pub_.getNumSubscribers() <= 0)
+  if ( time_map_pub_.getNumSubscribers() > 0 )
   {
     // Time map. Fill content in appropriate range [0,255] and publish
     // Happening at the camera's image plane
