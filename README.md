@@ -66,7 +66,13 @@ In a terminal:
 	
 The verbosity level (>=0) for printing and debugging purposes using glog is controlled by means of the parameters passed to the node `args="--v level"` (see the example launch file).
 
-In another terminal, run `rqt_image_view` and listen to the image topics published. At the begininng, you might not see anything, since the code to set up the publishers needs to be written.
+In another terminal, run 
+
+	rqt_image_view
+
+and listen to the image topics published. At the begininng, you might not see anything, since the code to set up the publishers needs to be written. Alternatively, use the provided rqt perspective file in the launch folder. Run the following command in a terminal, from within the folder of this repository:
+
+	rqt --perspective-file launch/mosaic_view.perspective
 
 End the program execution with `Ctrl + C` keyboard shortcut.
 
