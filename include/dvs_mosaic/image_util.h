@@ -1,6 +1,7 @@
 #pragma once
 
 #include <opencv2/core/core.hpp>
+#include <cv_bridge/cv_bridge.h>
 
 namespace image_util
 {
