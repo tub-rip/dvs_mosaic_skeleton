@@ -59,7 +59,7 @@ Mosaic::Mosaic(ros::NodeHandle & nh, ros::NodeHandle nh_private)
 
   // Observation / Measurement function
   C_th_ = 0.45; // dataset
-  measure_contrast_ = true;
+  measure_contrast_ = false;
   if (measure_contrast_)
     var_R_ = 0.17*0.17; // units [C_th]^2, (contrast)
   else
