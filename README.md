@@ -4,6 +4,20 @@ Partial re-implementation of the paper  [Simultaneous Mosaicing and Tracking wit
 
 Le us start with the "mapping" part, that is, creating the brightness mosaic (by estimating the spatial gradients and then integrating them by [Poisson image reconstruction](https://en.wikipedia.org/wiki/Gradient-domain_image_processing)). Locations to be filled with code are marked with `FILL IN`.
 
+## Documentation and video
+- [Problem statement: Panoramic image reconstruction with a rotating event camera](https://drive.google.com/file/d/18gM9RrMmwxUeEksA12fhyIMd8Z0QRHOg/view?usp=sharing)
+- [Video of the dvs_mosaic program in action](https://youtu.be/yihfRjuU2Qs)
+
+## Input / Output
+**Input**:
+- Events (topic)
+- Ground truth poses (pure camera rotation) for the mapping part.
+
+**Output**:
+- Panoramic image with reconstructed brightness.
+
+**Parameters** (in the launch file):
+- TO DO
 
 ## Dependencies
 
@@ -15,7 +29,7 @@ Create a catkin workspace (if there is none yet). For example, from your home fo
 	mkdir -p catkin_ws/src
 	cd catkin_ws
 	catkin config --init --mkdirs --extend /opt/ros/melodic --merge-devel --cmake-args -DCMAKE_BUILD_TYPE=Release
-	
+
 Depending on the ROS distribution you installed, you might have to use `kinetic` instead of `melodic` in the previous command.
 
 ### Add packages to the catkin workspace
@@ -23,8 +37,8 @@ Depending on the ROS distribution you installed, you might have to use `kinetic`
 Clone this repository into the `src` folder of your catkin workspace.
 
 The catkin package dependencies are:
-- ROS messages for DVS ([rpg_dvs_ros](https://github.com/uzh-rpg/rpg_dvs_ros))
 - [catkin simple](https://github.com/catkin/catkin_simple)
+- ROS messages for DVS ([rpg_dvs_ros](https://github.com/uzh-rpg/rpg_dvs_ros))
 - [Google Logging Library (glog)](https://github.com/catkin/catkin_simple.git)
 - [Gflags (formerly Google Commandline Flags)](https://github.com/ethz-asl/gflags_catkin)
 - [minkindr](https://github.com/ethz-asl/minkindr) (for dealing with poses). minkindr depends on [eigen_catkin](https://github.com/ethz-asl/eigen_catkin.git) and [eigen_checks](https://github.com/ethz-asl/eigen_checks.git), which are therefore also required.
@@ -35,7 +49,7 @@ The above dependencies are specified in the [dependencies.yaml](dependencies.yam
 	sudo apt-get install python3-vcstool
 	vcs-import < dvs_mosaic/dependencies.yaml
 
-The previous command should clone the the repositories into folders *catkin_simple*, *rpg_dvs_ros*, *glog_catkin*, *gflags_catkin*, *minkindr*, *eigen_checks*, *eigen_catkin* inside the src/ folder of your catking workspace, at the same level as this repository *dvs_mosaic*. They should NOT be inside the *dvs_mosaic* folder.
+The previous command should clone the repositories into folders *catkin_simple*, *rpg_dvs_ros*, *glog_catkin*, *gflags_catkin*, *minkindr*, *eigen_checks*, *eigen_catkin* inside the src/ folder of your catkin workspace, at the same level as this repository *dvs_mosaic*. They should NOT be inside the *dvs_mosaic* folder.
 
 Additional ROS tools needed (specified in the [package.xml](package.xml) file):
 
@@ -51,7 +65,7 @@ The Poisson solver used is from [this page](https://kluge.in-chemnitz.de/opensou
 Assuming your terminal is in the `src` folder of your catkin workspace:
 
 	catkin build dvs_mosaic
-	source ../devel/setup.bash
+	source ~/catkin_ws/devel/setup.bash
 
 ## Running the code
 
@@ -63,18 +77,19 @@ Edits before running the code:
 In a terminal:
 
 	roslaunch dvs_mosaic synth.launch
-	
+
 The verbosity level (>=0) for printing and debugging purposes using glog is controlled by means of the parameters passed to the node `args="--v level"` (see the example launch file).
 
-In another terminal, run 
+In another terminal, run
 
 	rqt_image_view
 
-and listen to the image topics published. At the begininng, you might not see anything, since the code to set up the publishers needs to be written. Alternatively, use the provided rqt perspective file in the launch folder. Run the following command in a terminal, from within the folder of this repository:
+and listen to the image topics published. At the beginning, you might not see anything, since the code to set up the publishers needs to be written. Alternatively, use the provided rqt perspective file in the launch folder. Run the following command in a terminal, from within the folder of this repository:
 
 	rqt --perspective-file launch/mosaic_view.perspective
 
 End the program execution with `Ctrl + C` keyboard shortcut.
+
 
 ## References
 
