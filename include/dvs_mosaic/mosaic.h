@@ -88,10 +88,6 @@ private:
   bool rotationAt(const ros::Time& t_query, cv::Matx33d& Rot_interp);
   void project_EquirectangularProjection(const cv::Point3d& pt_3d, cv::Point2f& pt_on_mosaic);
 
-  // Tracking (if time allows)
-  int num_events_pose_update_;
-  int idx_first_ev_pose_;  // index of first event of processing window
-
   // Precomputed bearing vectors for each camera pixel
   std::vector<cv::Point3d> precomputed_bearing_vectors_;
   void precomputeBearingVectors();

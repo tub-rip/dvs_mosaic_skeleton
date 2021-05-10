@@ -1,20 +1,33 @@
 <launch>
 
-  <node pkg="rosbag" type="play" name="player" args="-r 1.0 -s 0 -u 5. /home/ggb/ros/catkin_ws_evis/src/dvs_mosaicing/data/synth1/events.bag" />
+  <!-- Visualize the images produced -->
+  <!-- Load this node first -->
+  <node name = "my_rqt_dashboard" pkg = "rqt_gui" type = "rqt_gui" respawn = "false" output = "screen"
+    args = "--perspective-file $(find dvs_mosaic)/launch/mosaic_view.perspective"/>
 
-  <!-- Render events and frames -->
+  <!-- Play the data in the ROS bag file, as if an event camera was available -->
+  <node pkg="rosbag" type="play" name="player" args="-r 1.0 -s 0 -u 5. $(find dvs_mosaic)/data/synth1/events.bag" />
+  <!-- To show from the beginning, it is desirable to add "- -pause" to args
+  and then hit the space bar to start playback -->
+
+  <!-- Render input events -->
   <node name="dvs_displayer_one" pkg="dvs_displayer" type="dvs_displayer" output="screen">
     <param name="display_method" value="red-blue"/>
     <remap from="events" to="/dvs/events" />
     <remap from="event_image" to="event_image" />
   </node>
 
+  <!-- Mosaic reconstruction given camera trajectory -->
   <node name="mosaic" pkg="dvs_mosaic" type="dvs_mosaic" output="screen" args="--v 1">
     <!-- args= v is Printing level. The higher, the more details are printed -->
 
     <!-- Input / Output -->
     <!-- Which topic to listen? Map topic name of input events -->
     <remap from="events" to="/dvs/events" />
+
+    <!-- Algorithm parameters -->
+    <param name="mosaic_height" value="1024" />
+    <param name="num_events_map_update" value="200000" />
   </node>
 
 </launch>

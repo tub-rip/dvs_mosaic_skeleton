@@ -15,7 +15,7 @@ void Mosaic::processEventForMap(const dvs_msgs::Event& ev,
   const double dt_ev = t_ev - t_prev;
   CHECK_GT(dt_ev,0) << "Non-positive dt_ev"; // Two events at same pixel with same timestamp
 
-  // FILL in ... lots of gaps. This function is mostly empy
+  // FILL in ... lots of gaps. This function is mostly empty
 
   // Get map point corresponding to current event
   // hint: call project_EquirectangularProjection
@@ -42,7 +42,7 @@ void Mosaic::processEventForMap(const dvs_msgs::Event& ev,
   gm += Kalman_gain * nu_innovation;
   // Pg -= ...
 
-  // Store updated values of grad_map_ and grad_map_covar_ at corresponding pixel
+  // Store updated values on corresponding pixel of grad_map_ and grad_map_covar_
 
 }
 

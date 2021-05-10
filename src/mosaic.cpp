@@ -17,11 +17,14 @@ Mosaic::Mosaic(ros::NodeHandle & nh, ros::NodeHandle nh_private)
  , pnh_("~")
 {
   // Get parameters
-  nh_private.param<int>("Num_ev_map_update", num_events_map_update_, 10000);
-  nh_private.param<int>("Num_ev_pose_update", num_events_pose_update_, 200);
+  nh_private.param<int>("num_events_map_update", num_events_map_update_, 10000);
+  nh_private.param<int>("mosaic_height", mosaic_height_, 1024);
+  float grad_init_variance; // pixel-wise EKF
+  nh_private.param<float>("variance_init_grad", grad_init_variance, 10.);
 
   // Set up subscribers
   // FILL IN...
+  ROS_ERROR("You need to start writing the code..."); return;
 
   // set queue_size to 0 to avoid discarding messages (for correctness).
 
@@ -51,7 +54,6 @@ Mosaic::Mosaic(ros::NodeHandle & nh, ros::NodeHandle nh_private)
   // Set sensor_width_, sensor_height_ and precompute bearing vectors
 
   // Mosaic size (in pixels)
-  mosaic_height_ = 1024; // 512 or 256 for prototyping
   mosaic_width_ = 2 * mosaic_height_;
   // FILL IN ...
   // Set mosaic_size_, fx_ and fy_ and Initialize mosaic_img_ (if needed)
@@ -68,7 +70,6 @@ Mosaic::Mosaic(ros::NodeHandle & nh, ros::NodeHandle nh_private)
   // Mapping variables
   map_of_last_rotations_.resize(sensor_width_*sensor_height_); // for speed-up
   grad_map_ = cv::Mat::zeros(mosaic_size_, CV_32FC2);
-  const float grad_init_variance = 10.f;
   grad_map_covar_ = cv::Mat(mosaic_size_, CV_32FC3, cv::Scalar(grad_init_variance,0.f,grad_init_variance));
 
   // Ground-truth poses for prototyping
@@ -110,7 +111,7 @@ void Mosaic::eventsCallback(const dvs_msgs::EventArray::ConstPtr& msg)
   packet_number++;
 
   // -----------------------------------------------------------------
-  // Call pose tracker (if time allows)
+  // Call pose tracker (Ex 8)
 
 
   // -----------------------------------------------------------------
@@ -226,8 +227,9 @@ void Mosaic::reconfigureCallback(dvs_mosaic::dvs_mosaicConfig &config, uint32_t 
 * \brief Load dynamic parameters
 */
 {
-  num_events_map_update_ = config.Num_ev_map_update;
-  num_events_pose_update_ = config.Num_ev_pose_update;
+  num_events_map_update_ = config.num_events_map_update;
+  C_th_ = config.contrast_sensitivity;
+  var_R_ = config.std_measurement_noise * config.std_measurement_noise;
 }
 
 }

@@ -70,9 +70,9 @@ Assuming your terminal is in the `src` folder of your catkin workspace:
 ## Running the code
 
 Edits before running the code:
-- Move the camera calibration file to your `~/.ros/camera_info/` folder. Create the folder if it does not previously exist.
-- In the launch file, edit the path to the data file (events.bag ROS bag) that is provided in the folder called `data`.
-- In `poses_groundtruth.cpp`, edit the path to the data file with the ground truth poses.
+- move the camera calibration file to your `~/.ros/camera_info/` folder. Create the folder if it does not previously exist.
+- set the path to the event data (should be OK in the launch file)
+- set path to the ground truth poses (should be OK in the `poses_groundtruth.cpp` file)
 
 In a terminal:
 
@@ -80,7 +80,7 @@ In a terminal:
 
 The verbosity level (>=0) for printing and debugging purposes using glog is controlled by means of the parameters passed to the node `args="--v level"` (see the example launch file).
 
-In another terminal, run
+If the rqt perspective file is not launched from the launch file, in another terminal, run
 
 	rqt_image_view
 

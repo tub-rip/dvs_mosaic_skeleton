@@ -1,7 +1,7 @@
 #include <dvs_mosaic/mosaic.h>
 #include <fstream>
 #include <glog/logging.h>
-
+#include <ros/package.h>
 
 namespace dvs_mosaic
 {
@@ -12,9 +12,7 @@ namespace dvs_mosaic
 void Mosaic::loadPoses()
 {
   std::ifstream input_file;
-  // FILL IN ... set the appropriate path to the file
-  input_file.open("/home/ggb/ros/catkin_ws_evis/src/dvs_mosaicing/data/synth1/poses.txt");
-
+  input_file.open(ros::package::getPath("dvs_mosaic") + "/data/synth1/poses.txt");
   // Open file to read data
   if (input_file.is_open())
   {
@@ -31,13 +29,12 @@ void Mosaic::loadPoses()
       Transformation T0;
       if (stm >> sec >> nsec >> x >> y >> x >> qx >> qy >> qz >> qw)
       {
-        ros::Time(sec,nsec);
         const Eigen::Vector3d position(x,y,z);
         const Eigen::Quaterniond quat(qw,qx,qy,qz);
         Transformation T(position, quat);
         poses_.insert( std::pair<ros::Time, Transformation>(ros::Time(sec,nsec), T) );
+        count++;
       }
-      count++;
     }
     VLOG(2) << "count poses = " << count;
 
